@@ -1,0 +1,5 @@
+# Tailwind CLI standalone binary, 39 MB. Re-download, never commit.
+# Note the pattern, not the directory: tools/build.cmd and tools/serve.mjs are source.
+tools/*.exe
+
+.DS_Store

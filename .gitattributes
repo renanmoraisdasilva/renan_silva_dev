@@ -1,0 +1,16 @@
+# The stylesheet is generated. Letting core.autocrlf rewrite it would turn
+# every rebuild into a whole-file whitespace diff, so store it byte-for-byte.
+assets/output.css -text
+
+# Fonts are binary. Git sniffs these correctly on its own, but being explicit
+# costs nothing and survives someone changing core.autocrlf.
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+
+# Windows batch files misbehave with bare LF line endings.
+tools/*.cmd text eol=crlf

@@ -1,0 +1,73 @@
+/* ---------------------------------------------------------------------------
+   Fonts, self-hosted. Latin subset only: every character used on this page
+   (English and Portuguese) lives inside U+0000-00FF, so the latin-ext files
+   were removed rather than shipped unused.
+
+   url() paths are relative to the COMPILED output at assets/output.css,
+   not to this source file.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  /* Icons are ligatures. 'swap' would render the literal word
+     "calendar_month" before the font arrives, so 'block' is correct here. */
+  font-display: block;
+  src: url('fonts/material-symbols-outlined.woff2') format('woff2');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    /* Anchor links land below the sticky header instead of under it. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    color: #0f172a;
+    background-color: #ffffff;
+    /* Inter character variants: single-storey a, no-slash l, etc. */
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  /* Subset to the four icons this page uses: translate, school, verified,
+     calendar_month. Source: fonts.googleapis.com with &icon_names= set. */
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+}
