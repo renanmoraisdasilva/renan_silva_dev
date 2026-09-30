@@ -99,9 +99,6 @@ against the code. `luna/documentation/dev_phases/` holds the design history
 instead, recording why the system was built the way it was and in what order,
 which is a different thing to send a recruiter.
 
-`finance-app` is deliberately absent. It is a private repository holding
-personal financial data, and it does not belong on a public portfolio.
-
 ## The certification links
 
 Two of the three "Verify" links point at a real, public credential:
