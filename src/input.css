@@ -71,3 +71,40 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Cal.com modal height. Deliberately OUTSIDE @layer components.
+
+   Tailwind tree-shakes custom rules in @layer components down to the ones whose
+   selectors appear in the content files. <cal-modal-box> and .cal-embed are
+   both created by Cal's JavaScript at runtime and appear nowhere in index.html,
+   so a rule in that layer was silently dropped from the build. Rules here are
+   emitted verbatim.
+
+   Why this rule exists: Cal's embed.css sets `.cal-embed { min-height: 300px }`
+   and injects it into <head> at runtime, after this stylesheet. That left the
+   calendar a 300px strip inside a full-viewport .my-backdrop, and Cal treats
+   any click reaching the host as a backdrop dismissal, so stray taps had
+   somewhere to land and the modal would close. Matching .cal-embed explicitly
+   outranks it on specificity, so no !important is needed.
+
+   min-height rather than height, on purpose. Cal sets height inline and caps
+   max-height at getMaxHeightForModal() = innerHeight - 100, reserving room for
+   the close button. Raising only the floor gives the calendar space while
+   leaving Cal's ceiling in charge. dvh rather than vh because a mobile
+   browser's URL bar makes vh larger than the area actually on screen.
+   --------------------------------------------------------------------------- */
+
+cal-modal-box > iframe.cal-embed {
+  min-height: 80dvh;
+}
+
+/* The embed centres the dialog with top:50% + translateY(-50%), so an
+   over-tall box overflows equally at both ends and its top becomes
+   unreachable. 560px is roughly a phone in landscape; a portrait phone is
+   667px and up, so portrait gets the full 80dvh. */
+@media (max-height: 560px) {
+  cal-modal-box > iframe.cal-embed {
+    min-height: 60dvh;
+  }
+}

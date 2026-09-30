@@ -5,6 +5,8 @@ assets/output.css -text
 # Fonts are binary. Git sniffs these correctly on its own, but being explicit
 # costs nothing and survives someone changing core.autocrlf.
 *.woff2 binary
+*.gif binary
+*.pdf binary
 *.png binary
 *.jpg binary
 *.jpeg binary
