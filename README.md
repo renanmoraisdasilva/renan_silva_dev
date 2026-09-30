@@ -102,7 +102,36 @@ which is a different thing to send a recruiter.
 `finance-app` is deliberately absent. It is a private repository holding
 personal financial data, and it does not belong on a public portfolio.
 
+## The certification links
+
+Two of the three "Verify" links point at a real, public credential:
+
+- **AWS Cloud Quest** to the Credly badge page, which names Renan Morais as
+  the recipient
+- **Foundational C#** to the freeCodeCamp certification. That page is
+  client-rendered, so its HTML contains none of the certificate text and a
+  plain fetch looks empty; the certificate is present once it renders.
+
+The **SFPC** from CertiProf has no working public link. The
+`certificates.easy-lms.com/exam/session/<uuid>` shape is the correct one for
+CertiProf, and that is the shape everyone publishes, but this particular URL
+returns 404 with the message:
+
+> For data security reasons, your certificate is not accessible anymore via
+> this URL. Please, contact the person or organization that supplied your
+> certificate for more information.
+
+That is CertiProf revoking public access to the credential, not a malformed
+link and not a temporary outage. Contacting them is the route to a working URL.
+Until then the card shows "Verify n/a" as a non-link with a `title` explaining
+why, rather than a "Verify" link that goes nowhere. Replace it when a working
+URL exists.
+
+Worth knowing generally: these three links previously pointed at vendor homepages
+rather than the credentials, so "Verify" was not actually verifying anything.
+
 ## The portrait
+
 
 `assets/portrait.jpg` is the hero photo at 192x192, about 11 KB. The hero slot
 renders at 80px on mobile and 96px from `sm` up, so 192 is the 2x size and
