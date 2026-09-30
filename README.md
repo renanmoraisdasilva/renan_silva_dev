@@ -93,9 +93,11 @@ The hero button and the contact list point at the profile,
 `https://github.com/renanmoraisdasilva`, because they are not about one project.
 
 The Luna card's "Architecture Spec" link goes to
-`luna/documentation/dev_phases/phase-1/architecture.md`, the system-wide
-architecture document. Phase 2's file is the messaging deep-dive, not the
-general spec, so it is not the one linked.
+`luna/documentation/architecture.md`. That is the current-state document: the
+service topology, the six services and their database ownership, verifiable
+against the code. `luna/documentation/dev_phases/` holds the design history
+instead, recording why the system was built the way it was and in what order,
+which is a different thing to send a recruiter.
 
 `finance-app` is deliberately absent. It is a private repository holding
 personal financial data, and it does not belong on a public portfolio.
