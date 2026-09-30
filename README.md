@@ -22,7 +22,7 @@ assets/fonts/      self-hosted Inter, JetBrains Mono, Material Symbols subset
 assets/*.pdf       the resume, linked with a download attribute
 assets/luna-demo.gif  copied from the Luna repo, not generated here
 assets/portfolio-demo.gif  copied from portfolio-dashboard, not generated here
-assets/portrait.jpg  the hero photo, downscaled from a 1254px export
+assets/portrait.jpg  the hero photo, cropped square then downscaled to 192px
 assets/favicon-source.png  the icon artwork, GENERATED inputs, not generated
 assets/favicon.ico, favicon-32x32.png, apple-touch-icon.png  GENERATED. Do not hand-edit.
 tailwind.config.js Tailwind theme
@@ -101,6 +101,23 @@ which is a different thing to send a recruiter.
 
 `finance-app` is deliberately absent. It is a private repository holding
 personal financial data, and it does not belong on a public portfolio.
+
+## The portrait
+
+`assets/portrait.jpg` is the hero photo at 192x192, about 11 KB. The hero slot
+renders at 80px on mobile and 96px from `sm` up, so 192 is the 2x size and
+covers a retina display.
+
+The source photo is **not square**, so it is centre-cropped to a square before
+being scaled down. Scaling a 1413x1113 frame to 192x192 without that step would
+distort the face. The crop takes the largest centred square, which framed this
+particular photo correctly, but a new one may not: check where the face lands
+and shift the crop if it is off-centre or cropped at the chin.
+
+The `object-cover object-center` on the `<img>` is a backstop for the aspect
+ratio, not the crop. `width="96"` and `height="96"` stay as they are, because
+the delivered file is 192x192 and those attributes reserve the right box at
+1x.
 
 ## No third-party images
 
