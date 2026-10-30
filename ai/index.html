@@ -138,16 +138,18 @@
 <h2 class="text-3xl font-bold tracking-tight text-slate-900">What I've Built</h2>
 <p class="mt-2 text-sm sm:text-base text-slate-600">LLM applications built from specification to acceptance, with the decisions and the tests to back them.</p>
 </div>
-<!-- Featured project. The preview, the title and the repo link all point at the
-     repository; the documentation links go to the current-state architecture,
-     the honest build history and the test evidence, in that order. -->
+<!-- One project card and one roadmap card, side by side, so the grid keeps the
+     same weight as the full-stack page. The card says what Lucid is; the
+     documentation links carry the depth. -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+<!-- Card 1: Lucid -->
 <article class="rounded-xl border border-blue-200 bg-white hover:border-blue-400 transition-all duration-200 flex flex-col justify-between shadow-sm overflow-hidden group">
 <div>
 <div class="relative bg-slate-900 border-b border-slate-800 overflow-hidden aspect-[16/9]">
 <a class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" href="https://github.com/renanmoraisdasilva/lucid" rel="noopener noreferrer" target="_blank">
 <img alt="Lucid demo: streamed reply with Markdown, code highlighting, model picker and conversation sidebar" class="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300" decoding="async" height="522" loading="lazy" src="../assets/lucid-demo.gif" width="680">
 </a>
-<div class="absolute top-3 right-3 bg-blue-600 text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded shadow-sm">Featured / LLM Application</div>
+<div class="absolute top-3 right-3 bg-blue-600 text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded shadow-sm">Featured</div>
 </div>
 <div class="p-4 sm:p-6">
 <div class="flex items-center justify-between text-xs mb-2.5">
@@ -156,62 +158,53 @@
 <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug">
 <a class="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" href="https://github.com/renanmoraisdasilva/lucid" rel="noopener noreferrer" target="_blank">Lucid — Streaming LLM Chat Application</a>
 </h3>
-<p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">A ChatGPT-style chat application built as the reference project for this pivot: FastAPI and PostgreSQL behind a React SPA, answers streamed token by token over SSE, full conversations persisted, and a provider interface proved by two real implementations. The interesting part is not the chat box. It is the boundaries around the model.</p>
+<p class="mt-2 text-xs text-slate-600 leading-relaxed">ChatGPT-style chat app built as the reference project for this pivot: FastAPI and PostgreSQL behind a React SPA, answers streamed token by token over SSE, and a provider boundary proved by two real implementations. The interesting part is the boundaries around the model, not the chat box.</p>
 </div>
 </div>
 <div class="px-4 pb-4 sm:px-6 sm:pb-6 pt-0">
 <div class="pt-3.5 border-t border-slate-100">
-<ul class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mb-4 text-xs text-slate-600 leading-relaxed">
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Provider boundary:</strong> one protocol behind three implementations (OpenAI-compatible, Gemini, scripted). Adding the second real provider touched one adapter, one factory entry and the catalogue — streaming, retries and cancellation kept working.</span></li>
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Streaming contract:</strong> named SSE events (<code class="font-mono text-[11px] bg-slate-100 px-1 rounded">meta</code> → <code class="font-mono text-[11px] bg-slate-100 px-1 rounded">delta</code> → <code class="font-mono text-[11px] bg-slate-100 px-1 rounded">usage</code> → <code class="font-mono text-[11px] bg-slate-100 px-1 rounded">done</code>), with exactly one terminal event. Stop and browser disconnect both close the provider stream and finalize the attempt as interrupted.</span></li>
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Durable history:</strong> messages, attempts, token usage and timings are persisted separately, so a retry adds an attempt instead of overwriting the evidence. The database itself enforces one in-progress attempt per conversation.</span></li>
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Bounded context:</strong> a 6,000-token input budget with 2,048 reserved for the reply, oldest turns dropped first — set by measurement against a free-tier tokens-per-minute limit, not by a guess.</span></li>
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Failure semantics:</strong> eight domain error codes with explicit retryable flags, at most two automatic retries with backoff, and never a retry after the first token, so partial output is never duplicated.</span></li>
-<li class="flex gap-2"><span class="text-blue-600 font-bold shrink-0" aria-hidden="true">→</span><span><strong class="font-semibold text-slate-900">Tested offline:</strong> 258 backend and 125 frontend tests, integration tests against real PostgreSQL, the model mocked — the suite runs in about thirty seconds and never spends quota.</span></li>
-</ul>
 <div class="flex flex-wrap gap-1.5 mb-3.5">
 <span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">Python 3.12</span>
 <span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">FastAPI</span>
-<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">Pydantic v2</span>
-<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">PostgreSQL 17</span>
-<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">SQLAlchemy 2</span>
-<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">Alembic</span>
+<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">PostgreSQL</span>
 <span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">SSE</span>
 <span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">React 19</span>
-<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">GitHub Actions</span>
+<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">SQLAlchemy 2</span>
+<span class="px-2 py-0.5 text-[11px] font-mono bg-slate-50 text-slate-700 rounded border border-slate-200">Alembic</span>
 </div>
 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium">
 <a class="text-blue-700 hover:text-blue-900 inline-flex items-center gap-1 font-semibold py-1" href="https://github.com/renanmoraisdasilva/lucid" rel="noopener noreferrer" target="_blank">GitHub Repo <span aria-hidden="true">↗</span></a>
 <a class="text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 py-1" href="https://github.com/renanmoraisdasilva/lucid/blob/main/docs/architecture.md" rel="noopener noreferrer" target="_blank">Architecture <span aria-hidden="true">↗</span></a>
 <a class="text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 py-1" href="https://github.com/renanmoraisdasilva/lucid/blob/main/docs/how-it-was-built.md" rel="noopener noreferrer" target="_blank">How it was built <span aria-hidden="true">↗</span></a>
-<a class="text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 py-1" href="https://github.com/renanmoraisdasilva/lucid/blob/main/docs/testing.md" rel="noopener noreferrer" target="_blank">Test evidence <span aria-hidden="true">↗</span></a>
 </div>
 </div>
 </div>
 </article>
-<!-- Roadmap. Labelled as intent so the page never claims work that does not
-     exist yet; each item is replaced by a real card when it is built. -->
-<div class="mt-6 p-4 sm:p-5 rounded-xl border border-slate-200 bg-slate-50/60">
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 mb-3">
+<!-- Card 2: roadmap. Deliberately a sibling card rather than a strip: it keeps
+     the grid balanced and never claims work that does not exist yet. -->
+<div class="rounded-xl border border-slate-200 bg-slate-50/60 flex flex-col p-4 sm:p-6">
+<div class="flex items-center justify-between gap-2 mb-4">
 <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Next in the roadmap</span>
-<span class="text-[10px] font-mono text-slate-400">INTENT, NOT ACHIEVEMENT</span>
+<span class="text-[10px] font-mono text-slate-400">INTENT</span>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-<div class="p-3 rounded-lg bg-white border border-slate-200">
+<div class="flex-1 flex flex-col justify-between gap-4">
+<div>
 <div class="flex items-center gap-1.5 mb-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">In design</span></div>
 <h4 class="text-xs font-bold text-slate-900">Knowledge assistant with RAG</h4>
-<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Document ingestion, chunking, embeddings, pgvector retrieval and citations — measured against a versioned evaluation set before any reranking is added.</p>
+<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Ingestion, pgvector retrieval and citations, measured against a versioned evaluation set.</p>
 </div>
-<div class="p-3 rounded-lg bg-white border border-slate-200">
+<div class="pt-3.5 border-t border-slate-200/70">
 <div class="flex items-center gap-1.5 mb-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">Planned</span></div>
 <h4 class="text-xs font-bold text-slate-900">Luna commerce agent</h4>
-<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Typed tools over the existing Luna .NET APIs, read-only first, with confirmation and authorization kept in application services rather than the model.</p>
+<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Typed tools over the existing .NET APIs; authorization stays in application services.</p>
 </div>
-<div class="p-3 rounded-lg bg-white border border-slate-200">
+<div class="pt-3.5 border-t border-slate-200/70">
 <div class="flex items-center gap-1.5 mb-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">Planned</span></div>
 <h4 class="text-xs font-bold text-slate-900">Claims document intelligence</h4>
-<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Asynchronous extraction with structured outputs, deterministic validation and a human review path for anything uncertain.</p>
+<p class="mt-1 text-[11px] text-slate-600 leading-relaxed">Asynchronous extraction with structured outputs and human review.</p>
 </div>
+</div>
+<p class="mt-4 pt-3.5 border-t border-slate-200/70 text-[10px] uppercase tracking-wider font-medium text-slate-400">Intent, not achievement — each becomes a card when it is built.</p>
 </div>
 </div>
 </section>
