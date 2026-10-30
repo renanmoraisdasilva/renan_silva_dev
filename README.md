@@ -86,6 +86,17 @@ build step, which is how GitHub Pages serves it. The cost of that choice is that
 editing the HTML and forgetting to rebuild will ship stale CSS, so run
 `tools\build.cmd` before every commit that touches the markup.
 
+**Run the command through `build.cmd`, not the raw Tailwind line above.** After
+compiling, it runs `tools/stamp-css.mjs`, which rewrites the stylesheet link in
+both pages to `output.css?v=<first 8 hex of its sha256>`. GitHub Pages serves
+`/assets` with `max-age=600` and the filename never changes, so without the hash
+a deploy that introduces a new utility class can be served alongside the
+previous stylesheet from a cache. The class then has no rule at all, the element
+falls back to inherited size, and the page looks wrong while every file on disk
+is correct. This happened to the `/ai/` roadmap badges: `text-[9px]` was missing
+from a cached `output.css`, so they rendered at 16px. The hash only changes when
+the CSS does, so it produces no diff on a build that changes nothing.
+
 Linux and macOS use the platform binary from the same release:
 
 ```

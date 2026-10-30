@@ -25,4 +25,12 @@ if errorlevel 1 (
   exit /b 1
 )
 for %%f in (assets\output.css) do echo assets\output.css  %%~zf bytes
+rem Stamp the stylesheet URL with a hash of the file just built, so a cache
+rem holding the previous one cannot pair old CSS with new markup.
+node tools\stamp-css.mjs
+if errorlevel 1 (
+  echo stamping the stylesheet URL failed
+  popd
+  exit /b 1
+)
 popd
