@@ -126,9 +126,9 @@ https://github.com/renanmoraisdasilva/lucid
 
 The Lucid card on `/ai/` adds three documentation links, all to `main` in that
 repository: `docs/architecture.md` (current state), `docs/how-it-was-built.md`
-(the honest history) and `docs/testing.md` (the test evidence). Those documents
-are authoritative over any number printed on the card; re-check the counts if
-you change the copy.
+(the honest history) and the repository itself. Those documents are
+authoritative over any claim printed on the card; re-check the copy against them
+if you change it.
 
 The hero button and the contact list point at the profile,
 `https://github.com/renanmoraisdasilva`, because they are not about one project.
