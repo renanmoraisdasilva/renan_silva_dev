@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./*.html'],
+  // ai/index.html is the second page. It shares assets/output.css, so it has to
+  // be scanned here or its own utilities are tree-shaken away by the build.
+  content: ['./*.html', './ai/*.html'],
   theme: {
     extend: {
       fontFamily: {

@@ -1,40 +1,73 @@
 # renan-silva.dev
 
-Source for the single-page portfolio. Static HTML, no framework, no build
+Source for two static portfolio pages: the full-stack profile on the bare
+domain and the AI engineering profile under `/ai/`. No framework, no build
 tool. Tailwind is compiled to CSS ahead of time and the fonts are self-hosted,
-so the page ships its HTML, CSS and fonts with no framework runtime.
+so both pages ship their HTML, one shared CSS file and fonts with no framework
+runtime.
 
 The one exception is the Cal.com booking embed, which is a third-party script
-loaded from `app.cal.com`. It is the only JavaScript on the page and it is
-there to make the contact CTA work.
+loaded from `app.cal.com`. It is the only JavaScript on either page and it is
+there to make the contact CTA work. Both pages load it, from their own copy of
+the same snippet.
 
-The page itself argues for the two open source projects it links to. This
-repository is the evidence, so the build stays boring on purpose: one HTML
-file, one stylesheet, no package manager.
+The pages argue for the open source projects they link to. This repository is
+the evidence, so the build stays boring on purpose: two HTML files, one
+stylesheet, no package manager.
 
 ## Layout
 
 ```
-index.html         the page, the only HTML file
+index.html         the full-stack page
+ai/index.html      the AI engineering page, sharing assets/ one level up
 src/input.css      @font-face rules, base styles, Tailwind directives
 assets/output.css  GENERATED. Do not edit.
 assets/fonts/      self-hosted Inter, JetBrains Mono, Material Symbols subset
-assets/*.pdf       the resume, linked with a download attribute
+assets/*.pdf       the resume, linked with a download attribute from both pages
 assets/luna-demo.gif  copied from the Luna repo, not generated here
 assets/portfolio-demo.gif  copied from portfolio-dashboard, not generated here
+assets/lucid-demo.gif  copied from the lucid repo, not generated here
 assets/portrait.jpg  the hero photo, cropped square then downscaled to 192px
 assets/favicon-source.png  the icon artwork, GENERATED inputs, not generated
 assets/favicon.ico, favicon-32x32.png, apple-touch-icon.png  GENERATED. Do not hand-edit.
-tailwind.config.js Tailwind theme
+tailwind.config.js Tailwind theme and content paths
 tools/build.cmd    regenerates assets/output.css
 tools/serve.mjs    dependency-free local preview server
 tools/make-favicon.mjs  regenerates the icon files
 ```
 
+## Two pages, one stylesheet
+
+`ai/index.html` is a second entry point, not a rewrite: same shell, same
+tokens, same self-hosted fonts, and the same `assets/output.css`. It differs in
+positioning (LLM applications and the Lucid case study instead of the
+distributed-systems work), and it reuses the experience, credentials and
+contact sections verbatim. Their markup is a copy of `index.html`, so those
+three sections have to be edited in both files or they will disagree.
+
+Everything an asset path can reach is one directory up, so the AI page uses
+`../assets/...`. Root-relative `/assets/...` would break the
+`renanmoraisdasilva.github.io/renan_silva_dev/ai/` address, which still serves.
+
+**The Tailwind content glob must keep scanning both files.** `content` in
+`tailwind.config.js` lists `./*.html` and `./ai/*.html`. Drop the second entry
+and the AI page compiles with its own utilities missing — with no build error,
+because `output.css` is committed and the stale file still has the shared
+classes. After editing either page, check a class that is used only on the AI
+page (for example `bg-amber-100` from the roadmap strip) is still in the built
+stylesheet.
+
+Cross-links: the full-stack page links to `ai/` in the nav (`AI ↗`, md and up),
+in the projects intro line, and in the footer; the AI page links back in the nav
+(`Full-stack ↗`, lg and up only), under the hero summary and in the footer. The
+nav labels are asymmetric on purpose: seven items do not fit in the md nav
+without wrapping, so the AI page's longer label waits for lg.
+
 ## Build the CSS
 
-The page uses utility classes, so `assets/output.css` has to be regenerated
-whenever the HTML or the config changes. Open the HTML, make your edit, run:
+The pages use utility classes, so `assets/output.css` has to be regenerated
+whenever either HTML file or the config changes. Open the HTML, make your edit,
+run:
 
 ```
 tools\build.cmd
@@ -81,13 +114,21 @@ the filename; renaming it means editing both links.
 
 ## Links into GitHub
 
-The two showcase repositories are public and each project card links to its own,
-in three places: the preview image, the title, and the "GitHub Repo" text link.
+The three showcase repositories are public and each project card links to its
+own, in three places: the preview image, the title, and the "GitHub Repo" text
+link.
 
 ```
 https://github.com/renanmoraisdasilva/luna
 https://github.com/renanmoraisdasilva/portfolio-dashboard
+https://github.com/renanmoraisdasilva/lucid
 ```
+
+The Lucid card on `/ai/` adds three documentation links, all to `main` in that
+repository: `docs/architecture.md` (current state), `docs/how-it-was-built.md`
+(the honest history) and `docs/testing.md` (the test evidence). Those documents
+are authoritative over any number printed on the card; re-check the counts if
+you change the copy.
 
 The hero button and the contact list point at the profile,
 `https://github.com/renanmoraisdasilva`, because they are not about one project.
@@ -159,7 +200,7 @@ recording this workspace already owned. It now sits here unchanged, and the
 
 ## The demo GIFs
 
-Both project cards show an animated capture of the real application, not a
+Three project cards show an animated capture of the real application, not a
 mock-up. Each is copied from its own repository and is byte-identical to the
 file there:
 
@@ -167,20 +208,23 @@ file there:
 | --- | --- | --- |
 | `assets/luna-demo.gif` | `luna/documentation/luna-demo.gif` | the Luna repo's own capture |
 | `assets/portfolio-demo.gif` | `portfolio-dashboard/docs/dashboard-demo.gif` | `npm run demo:build` |
+| `assets/lucid-demo.gif` | `lucid/docs/demo.gif` | `frontend/scripts/build-demo-gif.mjs` in that repo |
 
 `portfolio-dashboard/scripts/build-demo-gif.mjs` boots the built application,
 seeds it from `fixtures/portfolio_data.json`, and screenshots it, with the
 comment that a demo which does not match the product is worse than no demo.
 Its `--stills` mode writes the still images under `docs/images/` instead.
 
-Neither GIF is compressed. `portfolio-demo.gif` is 2.1 MB across 64 frames and
-`luna-demo.gif` is 1.2 MB across 52, so the two together are the bulk of what
-a visitor downloads. They are also loaded eagerly rather than lazily, so both
-start downloading before the visitor reaches `#projects`. Reducing that is a
-real optimisation and is deliberately not done yet.
+The two GIFs on the full-stack page are 2.1 MB and 1.2 MB, so together they are
+the bulk of what a visitor downloads, and they load eagerly — both start
+downloading before the visitor reaches `#projects`. Reducing that is a real
+optimisation and is deliberately not done yet. The Lucid GIF is 2.1 MB at
+680x522 across 103 frames, is the only heavy asset on `/ai/`, and is marked
+`loading="lazy"`; do not repeat the eager-load pattern on a page that grows past
+one card.
 
-Regenerating either means re-copying the file, and keeping the `width`/`height`
-attributes in `index.html` in step with it.
+Regenerating any of them means re-copying the file, and keeping the
+`width`/`height` attributes in the page that uses it in step with it.
 
 
 ## Booking
@@ -299,6 +343,12 @@ The site is published through GitHub Pages and served at `renan-silva.dev`.
 GitHub Pages reads it to decide which custom domain to serve, and it will keep
 serving the old `*.github.io` address too, so the domain resolves as soon as
 the DNS records exist.
+
+Both pages live in this one Pages site, so `/ai/` needs no CNAME, no DNS record
+and no separate certificate: a directory containing `index.html` is served at
+`renan-silva.dev/ai/`, and the canonical link in that file says so. The DNS is
+on Cloudflare and the apex is proxied; that affects certificate renewal for the
+whole site, not the new path.
 
 Until the records are in place the site is live at
 `https://renanmoraisdasilva.github.io/renan_silva_dev/` and
